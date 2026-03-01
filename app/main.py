@@ -3,6 +3,7 @@ import base64
 import json
 from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import AsyncOpenAI, RateLimitError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
@@ -11,6 +12,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(title="Money Validator API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://tucaserito.com", "https://www.tucaserito.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Hardcoded ranges mapped by denomination to list of tuples (start, end)
 BILL_RANGES = {
