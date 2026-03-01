@@ -188,17 +188,17 @@ async def validate_bill(file: UploadFile = File(...)):
             digits_str += char
             
     if letter != "B":
-        return {"status": "valido"}
+        return {"status": "valido", "serie": serial}
         
     try:
         numeric_val = int(digits_str)
     except ValueError:
         # Cannot parse numeric part, return normally as "valido"
-        return {"status": "valido"}
+        return {"status": "valido", "serie": serial}
 
     ranges = BILL_RANGES.get(corte, [])
     for (start, end) in ranges:
         if start <= numeric_val <= end:
-            return {"status": "siniestrado"}
+            return {"status": "siniestrado", "serie": serial}
             
-    return {"status": "valido"}
+    return {"status": "valido", "serie": serial}
