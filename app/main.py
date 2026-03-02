@@ -15,7 +15,7 @@ app = FastAPI(title="Money Validator API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://tucaserito.com", "https://www.tucaserito.com"],
+    allow_origins=["https://tucaserito.com", "https://www.tucaserito.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
