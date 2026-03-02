@@ -2,7 +2,7 @@ import os
 import base64
 import json
 from pathlib import Path
-from fastapi import FastAPI, File, UploadFile, HTTPException, status
+from fastapi import FastAPI, File, UploadFile, HTTPException, status, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import AsyncOpenAI, RateLimitError
@@ -118,7 +118,13 @@ def calculate_and_print_cost(usage):
     print("-------------------------------")
 
 @app.post("/validate")
-async def validate_bill(file: UploadFile = File(...)):
+async def validate_bill(
+    file: UploadFile = File(...),
+    x_tucaserito_token: str = Header(None)
+):
+    expected_token = os.getenv("TUCASERITO_TOKEN")
+    if not expected_token or x_tucaserito_token != expected_token:
+        raise HTTPException(status_code=401, detail="Token no válido o no proporcionado")
     contents = await file.read()
     base64_image = base64.b64encode(contents).decode("utf-8")
     mime_type = file.content_type or "image/jpeg"
