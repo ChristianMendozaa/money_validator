@@ -81,7 +81,7 @@ client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 )
 async def call_openai_with_retry(messages):
     return await client.chat.completions.create(
-        model="gpt-4.1-mini-2025-04-14",
+        model="gpt-4o-mini-2024-07-18",
         messages=messages,
         response_format={"type": "json_object"},
         temperature=0.0
@@ -101,9 +101,9 @@ def calculate_and_print_cost(usage):
     output_tokens = usage.completion_tokens
 
     # Pricing per million tokens
-    cost_input_per_m = 0.40
-    cost_cached_per_m = 0.10
-    cost_output_per_m = 1.60
+    cost_input_per_m = 0.15
+    cost_cached_per_m = 0.075
+    cost_output_per_m = 0.60
 
     cost_input = (uncached_input_tokens / 1_000_000.0) * cost_input_per_m
     cost_cached = (cached_tokens / 1_000_000.0) * cost_cached_per_m
